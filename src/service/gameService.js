@@ -80,6 +80,15 @@ class GameService{
         return matrixReelXCol; 
     }
 
+    /**
+     * this function check if in viewZone come payline then give win and
+     * count symbol and symbole kind 
+     * @param {payarray} payarray 
+     * @param {matrixReelXCol} matrixReelXCol 
+     * @param {content} content 
+     * @param {pay} pay 
+     * @returns 
+     */
    checkPayline = (payarray,matrixReelXCol,content,pay) =>{
         const result =[];
         let winAmount = 0 ;
@@ -104,21 +113,20 @@ class GameService{
 
     }
 
+    /**
+     * this function count symbole pair and send response count of same symbole in payline.
+     * @param {matrixReelXCol} matrixReelXCol 
+     * @param {payline} payline 
+     * @param {rowOfMatrix} rowOfMatrix 
+     * @returns 
+     */
     countOfSymbol = (matrixReelXCol,payline,rowOfMatrix) => {
         let count = 0;
         let d = 0;
         let symbol = matrixReelXCol[rowOfMatrix][d];
-        if(payline[0] === rowOfMatrix && symbol != 'DEVIL'){
+        if(payline[0] === rowOfMatrix){
             count++;
             for (let element = 1; element < payline.length; element++) {
-                // if (symbol === 'WILD' && matrixReelXCol[payline[element]][element] != 'DEVIL'){
-                //     symbol = matrixReelXCol[payline[element]][element];
-                //     count++;
-                //     continue;
-                // }
-                // if (matrixReelXCol[payline[element]][element] !== 'WILD' && matrixReelXCol[payline[element]][element] !== symbol){
-                //     break;
-                // }
                 if(symbol !== matrixReelXCol[payline[element]][element]){
                     break;
                 }
@@ -128,6 +136,17 @@ class GameService{
         return {count,symbol};
     }
 
+    /**
+     * this function call when count of symbole > 2 and 
+     * count winAmount
+     * @param {count} count 
+     * @param {symbol} symbol 
+     * @param {Pay} pay 
+     * @param {payline} payline 
+     * @param {currentBet} currrentBet 
+     * @param {numberOfPayLine} numberOfPayLine 
+     * @returns 
+     */
     buildPayLine = (count,symbol,pay,payline,currrentBet,numberOfPayLine) =>{
         let multipler = pay[`${symbol}`][`${count}ofakind`];
         return {symbol,wintype: `${count}ofakind`,payline ,WinAmount : (currrentBet/numberOfPayLine )* multipler }

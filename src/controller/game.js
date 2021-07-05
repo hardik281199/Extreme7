@@ -4,6 +4,12 @@ const { falshMessage } = require('../dispatcher/responseDispatcher')
 
 class Game{
 
+    /**
+     * this function send proper response to user and
+     * either in viewZone pay to use then counting chips and give win 
+     * @param {Request} req 
+     * @param {response} res 
+     */
     gameSpin =(req,res) => {
         getObject("Extreme7").then((gameData) =>{
             getObject("user-data").then((userData) =>{
@@ -21,9 +27,7 @@ class Game{
                 let result =checkPayline.result;
                 chips = checkPayline.chips - currentBet;
 
-
-                console.log(chips);
-
+                // update user-data
                 userData.content.chips = chips;
                 userData.content.currentBet = currentBet;
                 upsertObject('user-data',userData.content).then(()=>{

@@ -10,10 +10,8 @@ class GameConfig{
      * @param {response} res 
      */
     seedGameObject(){
-        console.log(gameVariable);
         const docType = DBDocType.GAME;
         const createdAt = Date.now();
-        console.log(docType);
         gameVariable.docType = docType ;
         gameVariable.createdAt = createdAt ;
         gameVariable.deletedAt = 0;
