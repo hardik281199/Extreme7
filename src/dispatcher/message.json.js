@@ -7,6 +7,7 @@ module.exports = {
         OK: 'OK'
     },
 
+    //this HTTP_STATUS use when send response then use this data.
     HTTP_STATUS: {
         OK: 200,
         NOT_FOUND: 422,
