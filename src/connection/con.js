@@ -32,7 +32,7 @@ const getObject = (key) => {
  */
 const upsertObject = (key,data) =>{
    return new Promise((resolve, reject)=>{
-      coll.upsert(key,data,(err, res) =>{
+      coll.upsert(key,data,(err,res) =>{
          if (err) {
             return reject(err);
          } else {

@@ -1,6 +1,6 @@
 const { getObject , upsertObject} = require('../connection/con');
 const { gameService} = require('../service/gameService');
-const { falshMessage } = require('../dispatcher/responseDispatcher')
+const { flashMessage } = require('../dispatcher/responseDispatcher')
 
 class Game{
 
@@ -11,9 +11,11 @@ class Game{
      * @param {response} res 
      */
     gameSpin =(req,res) => {
-        getObject("Extreme7").then((gameData) =>{
-            getObject("user-data").then((userData) =>{
-                let { chips , currentBet } = userData.content;
+        const userId = req.body.userId;
+        const bet = req.body.totalBet;
+        getObject("extreme7").then((gameData) =>{
+            getObject(userId).then((userData) =>{
+                let { chips , currentBet , totalBet } = userData.content;
                 //generateView Zone
                 const gameViewZone = gameService.generateViewZone(gameData.content);
                 const viewZone = gameViewZone.viewZone;
@@ -23,27 +25,33 @@ class Game{
 
                 
                 // in viewZonecheck payline available 
-                let checkPayline = gameService.checkPayline(gameData.content.payarray,matrixOfReelXcol,userData.content,gameData.content.payTable);
+                let checkPayline = gameService.checkPayline(gameData.content.payarray,matrixOfReelXcol,userData.content,gameData.content.payTable,bet);
                 let result =checkPayline.result;
-                chips = checkPayline.chips - currentBet;
-
+                chips = checkPayline.chips - bet;
                 // update user-data
                 userData.content.chips = chips;
-                userData.content.currentBet = currentBet;
-                upsertObject('user-data',userData.content).then(()=>{
+                userData.content.totalBet = bet;
+                userData.content.currentBet = checkPayline.currentBet;
+                upsertObject(userId,userData.content).then(()=>{
                     let data = {
                         viewZone  : viewZone,
                         result    : result,
                         currentBet : checkPayline.currentBet,
-                        totalBet : currentBet, 
+                        totalBet : bet, 
                         chips    : chips,
                         currentPayLines : checkPayline.currentPayLines,
                         TotalWin : checkPayline.winAmount
                     }
-                    const response = falshMessage.resDispatch(res,'OK',data);
+                    flashMessage.resDispatch(res,'OK',data);
                 })
-                
             })
+        }).catch((err)=>{
+            return flashMessage.resDispatchError(res, {
+                "isError" : false,
+                "message" : err.message,
+                "data" : {}
+            });
+            //flashMessage.resDispatchNotFound(res,'NOT_GAME_EXISTS')
         })
     };
 }

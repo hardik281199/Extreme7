@@ -20,23 +20,6 @@ class Dispatcher{
     }
 
     /**
-     * This function dispatches error api responses
-     * @param {responses} res send response
-     * @param {message} message message_code
-     * @returns false
-     */
-    resDispatchError(res,message){
-        let jsonResponse ={
-            "isError" : true,
-            "message" : RES_MESSAGES[`${message}`],
-            "data" : {}
-        }
-        res.statusCode = HTTP_STATUS.VALIDATION_ERROR;
-        res.send(jsonResponse);
-        return false;
-    }
-
-    /**
      * this function use to NOT_FOUND data
      * @param {response} res 
      * @param {message} message 
@@ -48,12 +31,24 @@ class Dispatcher{
             "message" : RES_MESSAGES[`${message}`],
             "data" : {}
         }
-        res.statusCode = HTTP_STATUS.NOT_FOUND;
-        res.send (jsonResponse);
-        return false;
+        res.writeHead(HTTP_STATUS.NOT_FOUND, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(jsonResponse));
+        res.end();
+    }
+
+    /**
+     * this function send proper response 
+     * @param {response} res 
+     * @param {data} jsonData 
+     * @returns 
+     */
+    resDispatchError(res,jsonResponse){
+        res.writeHead(HTTP_STATUS.NOT_FOUND, {'Content-Type': 'application/json'});
+        res.write(JSON.stringify(jsonResponse));
+        res.end();
     }
 
 }
 
 const resDispatch = new Dispatcher();
-module.exports.falshMessage = resDispatch;
+module.exports.flashMessage = resDispatch;

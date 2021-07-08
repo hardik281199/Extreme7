@@ -89,11 +89,11 @@ class GameService{
      * @param {pay} pay 
      * @returns 
      */
-   checkPayline = (payarray,matrixReelXCol,content,pay) =>{
+   checkPayline = (payarray,matrixReelXCol,content,pay,bet) =>{
         const result =[];
         let winAmount = 0 ;
         let chips = content.chips;
-        let currentBet = content.currentBet/ payarray.length;
+        let currentBet = bet/ payarray.length;
         let currentPayLines = payarray.length;
         for (let rowOfMatrix = 0; rowOfMatrix < matrixReelXCol.length; rowOfMatrix++){
             for (let rowOfPayArray = 0; rowOfPayArray < payarray.length; rowOfPayArray++){ 
@@ -109,7 +109,7 @@ class GameService{
             }
         }
         chips += winAmount;
-    return {result ,chips,winAmount , currentBet , currentPayLines}
+    return {result ,chips,winAmount , currentBet , currentPayLines ,}
 
     }
 

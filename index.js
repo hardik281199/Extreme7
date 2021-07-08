@@ -15,6 +15,12 @@ router.use(bodyparser.urlencoded({
 }));    
 
 require('./src/route/routes')(router);
-server.listen(process.env.PORT,() => console.log(`Exapress server is runing at port no :${process.env.PORT}`)); 
+server.listen(process.env.PORT,() => console.log(`Exapress server is runing at port no :${process.env.PORT}`));
+/**
+ * Seed Extreme7 game in database
+ */
+// const { seeder } = require('./src/seeder/seeder');
+// //seeder.seedGameObject();
+// seeder.seedUserObject();
 
 module.exports = router;
