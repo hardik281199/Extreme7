@@ -1,4 +1,11 @@
 class Mapper {
+    
+    /**
+     * this function use to send propre response in api
+     * @param {gameData} gameData 
+     * @param {UserData} userData 
+     * @returns 
+     */
     gameClickMapper= (gameData,userData) =>{
         const GameClickData ={
             game:{

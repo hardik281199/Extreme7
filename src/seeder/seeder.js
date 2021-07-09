@@ -23,6 +23,9 @@ class GameConfig{
 
     }
 
+    /**
+     * this function seed user data
+     */
     seedUserObject(){
         const uuid = "9b4b5e7e-dcfc-4aa3-8c3d-edb90ba706ec";
         const createdAt = Date.now();
