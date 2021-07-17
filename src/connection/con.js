@@ -1,14 +1,17 @@
 const couchbase = require('couchbase');
 
-const cluster = new couchbase.Cluster("couchbase://localhost", {
+const cluster = new Cluster("couchbase://localhost", {
    username: process.env.COUCHBASE_USERNAME,
    password: process.env.COUCHBASE_PASSWORD,
 });
 var bucket = cluster.bucket('slot-game');
 var coll = bucket.defaultCollection();
+console.log(coll);
+console.log(bucket);
 
 /**
  * connection database and get data
+ * get all data 
  * @param {id} key primary key of document 
  * @returns return result
  */
@@ -30,9 +33,9 @@ const getObject = (key) => {
  * @param {data} data upsert data this key data
  * @returns return result
  */
-const upsertObject = (key,data) =>{
-   return new Promise((resolve, reject)=>{
-      coll.upsert(key,data,(err,res) =>{
+const upsertObject = (key, data) => {
+   return new Promise((resolve, reject) => {
+      coll.upsert(key, data, (err, res) => {
          if (err) {
             return reject(err);
          } else {
